@@ -1,5 +1,6 @@
 package com.phi.smackchatapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -22,6 +23,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun loginCreateUserButtonClicked(view: View) {
-
+        val intent = Intent(this, CreateUserActivity::class.java)
+        startActivity(intent)
     }
 }
