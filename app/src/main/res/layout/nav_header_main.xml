@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_header_height"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:gravity="bottom" android:id="@+id/linearLayout">
+
+    <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            app:srcCompat="@drawable/profiledefault"
+            android:contentDescription="@string/nav_header_desc"
+            android:id="@+id/userImageNavHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintBottom_toTopOf="@+id/loginButtonNavHeader"
+            android:layout_marginBottom="8dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:id="@+id/usernameNavHeader"
+            app:layout_constraintTop_toTopOf="@+id/userImageNavHeader"
+            app:layout_constraintStart_toEndOf="@+id/userImageNavHeader" android:layout_marginStart="16dp" android:text="merve"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userEmailNavHeader"
+            app:layout_constraintStart_toEndOf="@+id/userImageNavHeader" android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/usernameNavHeader" android:layout_marginTop="8dp"
+            android:text="merve@phi.com"/>
+    <androidx.appcompat.widget.AppCompatButton
+            android:text="Login"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp" android:id="@+id/loginButtonNavHeader"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="24dp" android:layout_marginBottom="4dp" android:onClick="loginButtonNavClicked"
+            android:textAlignment="viewStart"/>
+    <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp" app:srcCompat="@drawable/addchannelbutton"
+            android:id="@+id/addChannelButton"
+            android:background="@android:color/transparent" android:scaleType="fitXY" android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="8dp" android:layout_marginBottom="8dp" android:onClick="addChannelClicked"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
