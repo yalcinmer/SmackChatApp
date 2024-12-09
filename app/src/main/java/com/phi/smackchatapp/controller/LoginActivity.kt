@@ -1,4 +1,4 @@
-package com.phi.smackchatapp
+package com.phi.smackchatapp.controller
 
 import android.content.Intent
 import android.os.Bundle

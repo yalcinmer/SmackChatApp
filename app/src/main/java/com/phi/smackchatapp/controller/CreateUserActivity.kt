@@ -1,4 +1,4 @@
-package com.phi.smackchatapp
+package com.phi.smackchatapp.controller
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.phi.smackchatapp.databinding.ActivityCreateUserBinding
+import com.phi.smackchatapp.service.AuthService
 import kotlin.random.Random
 
 class CreateUserActivity : AppCompatActivity() {
@@ -51,6 +52,11 @@ class CreateUserActivity : AppCompatActivity() {
     }
 
     fun createUserClicked(view: View) {
+        AuthService.registerUser(this, "j@j.com", "123456") { complete ->
+            if(complete) {
 
+            }
+
+        }
     }
 }
