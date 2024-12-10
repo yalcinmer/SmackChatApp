@@ -13,6 +13,7 @@ lifecycleLivedataKtx = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
 navigationFragmentKtx = "2.8.4"
 navigationUiKtx = "2.8.4"
+socketIoClient = "2.0.1"
 volley = "1.2.1"
 
 [libraries]
@@ -28,6 +29,7 @@ androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecy
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+socket-io-client = { module = "io.socket:socket.io-client", version.ref = "socketIoClient" }
 volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
 
 [plugins]
