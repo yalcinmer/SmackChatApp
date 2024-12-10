@@ -6,6 +6,7 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.phi.smackchatapp.databinding.ActivityLoginBinding
+import com.phi.smackchatapp.service.AuthService
 
 class LoginActivity : AppCompatActivity() {
 
@@ -19,7 +20,18 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun loginButtonClicked(view: View) {
+        val email = binding.loginEmailText.text.toString()
+        val password = binding.loginPasswordText.text.toString()
 
+        AuthService.loginUser(this, email, password) { success ->
+            if(success) {
+                AuthService.findUserByEmail(this) { findSuccess ->
+                    if(findSuccess) {
+                        finish()
+                    }
+                }
+            }
+        }
     }
 
     fun loginCreateUserButtonClicked(view: View) {
