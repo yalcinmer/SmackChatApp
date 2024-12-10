@@ -1,13 +1,17 @@
 package com.phi.smackchatapp.controller
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.phi.smackchatapp.databinding.ActivityCreateUserBinding
 import com.phi.smackchatapp.service.AuthService
+import com.phi.smackchatapp.utilities.BROADCAST_USER_DATA_CHANGE
 import kotlin.random.Random
 
 class CreateUserActivity : AppCompatActivity() {
@@ -22,6 +26,7 @@ class CreateUserActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityCreateUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.progressBar.visibility = View.INVISIBLE
     }
 
     @SuppressLint("DiscouragedApi")
@@ -57,21 +62,50 @@ class CreateUserActivity : AppCompatActivity() {
         val email = binding.createEmailText.toString()
         val password = binding.createPasswordText.toString()
 
-        AuthService.registerUser(this, email, password) { registerSuccess ->
-            if(registerSuccess) {
-                AuthService.loginUser(this, email, password) { loginSuccess ->
-                    if(loginSuccess) {
-                        AuthService.createUser(this, username, email, userAvatar, avatarColor) { createSuccess ->
-                            if(createSuccess) {
-
+        if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
+            AuthService.registerUser(this, email, password) { registerSuccess ->
+                if(registerSuccess) {
+                    AuthService.loginUser(this, email, password) { loginSuccess ->
+                        if(loginSuccess) {
+                            AuthService.createUser(this, username, email, userAvatar, avatarColor) { createSuccess ->
+                                if(createSuccess) {
+                                    val intent = Intent(BROADCAST_USER_DATA_CHANGE)
+                                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+                                    enableSpinner(false)
+                                    finish()
+                                } else {
+                                    errorToast()
+                                }
                             }
-
+                        } else {
+                            errorToast()
                         }
                     }
-
+                } else {
+                    errorToast()
                 }
             }
-
+        } else {
+            Toast.makeText(this, "Make sure username, email and password are filled in.", Toast.LENGTH_LONG).show()
+            enableSpinner(false)
         }
+    }
+
+    fun errorToast() {
+        Toast.makeText(this, "Something went wrong, please try again.", Toast.LENGTH_LONG).show()
+        enableSpinner(false)
+    }
+
+    fun enableSpinner(isEnabled: Boolean) {
+
+        if(isEnabled) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.INVISIBLE
+        }
+
+        binding.createUserButton.isEnabled = !isEnabled
+        binding.createAvatarImageView.isEnabled = !isEnabled
+        binding.backgroundColorButton.isEnabled = !isEnabled
     }
 }
