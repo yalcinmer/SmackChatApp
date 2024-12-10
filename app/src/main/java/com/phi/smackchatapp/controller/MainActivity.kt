@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private val socket = IO.socket(SOCKET_URL)
     private lateinit var binding: ActivityMainBinding
+    private lateinit var channelAdapter : ArrayAdapter<Channel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +50,8 @@ class MainActivity : AppCompatActivity() {
 
         socket.connect()
         socket.on("channelCreated", onNewChannel)
+
+        setupAdapters()
     }
 
     override fun onResume() {
@@ -62,6 +66,11 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    private fun setupAdapters() {
+        channelAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, MessageService.channels)
+        binding.channelList.adapter = channelAdapter
+    }
+
     private val userDataChangeReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -72,6 +81,15 @@ class MainActivity : AppCompatActivity() {
                 binding.navDrawerHeaderInclude.userImageNavHeader.setImageResource(resourceId)
                 binding.navDrawerHeaderInclude.userImageNavHeader.setBackgroundColor(UserDataService.returnAvatarColor(UserDataService.avatarColor))
                 binding.navDrawerHeaderInclude.loginButtonNavHeader.text = "LOGOUT"
+
+                if (context != null) {
+                    MessageService.getChannels(context) { complete ->
+                        if(complete) {
+                            channelAdapter.notifyDataSetChanged()
+                        }
+
+                    }
+                }
             }
         }
     }
@@ -118,6 +136,7 @@ class MainActivity : AppCompatActivity() {
 
             val newChannel = Channel(channelId, channelName, channelDescription)
             MessageService.channels.add(newChannel)
+            channelAdapter.notifyDataSetChanged()
         }
     }
 
