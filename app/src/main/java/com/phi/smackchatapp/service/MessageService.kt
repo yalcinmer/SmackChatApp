@@ -5,12 +5,14 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.phi.smackchatapp.controller.App
 import com.phi.smackchatapp.model.Channel
+import com.phi.smackchatapp.model.Message
 import com.phi.smackchatapp.utilities.URL_GET_CHANNELS
 import org.json.JSONException
 
 object MessageService {
 
     val channels = ArrayList<Channel>()
+    val messages = ArrayList<Message>()
 
     fun getChannels(complete : (Boolean) -> Unit) {
 
