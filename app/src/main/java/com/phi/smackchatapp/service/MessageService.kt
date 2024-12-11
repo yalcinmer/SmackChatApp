@@ -1,10 +1,8 @@
 package com.phi.smackchatapp.service
 
-import android.content.Context
 import android.util.Log
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.Volley
 import com.phi.smackchatapp.controller.App
 import com.phi.smackchatapp.model.Channel
 import com.phi.smackchatapp.utilities.URL_GET_CHANNELS
@@ -14,7 +12,7 @@ object MessageService {
 
     val channels = ArrayList<Channel>()
 
-    fun getChannels(context: Context, complete : (Boolean) -> Unit) {
+    fun getChannels(complete : (Boolean) -> Unit) {
 
         val channelRequest = object: JsonArrayRequest(Method.GET, URL_GET_CHANNELS, null, Response.Listener { response ->
 
@@ -50,6 +48,6 @@ object MessageService {
             }
         }
 
-        Volley.newRequestQueue(context).add(channelRequest)
+        App.prefs.requestQueue.add(channelRequest)
     }
 }

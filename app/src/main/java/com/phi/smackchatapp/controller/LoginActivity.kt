@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
 
         hideKeyboard()
         if(email.isNotEmpty() && password.isNotEmpty()) {
-            AuthService.loginUser(this, email, password) { success ->
+            AuthService.loginUser(email, password) { success ->
                 if (success) {
                     AuthService.findUserByEmail(this) { findSuccess ->
                         if (findSuccess) {

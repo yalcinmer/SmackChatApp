@@ -13,6 +13,7 @@ import android.widget.EditText
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.phi.smackchatapp.R
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private val socket = IO.socket(SOCKET_URL)
     private lateinit var binding: ActivityMainBinding
     private lateinit var channelAdapter : ArrayAdapter<Channel>
+    private var selectedChannel : Channel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +54,12 @@ class MainActivity : AppCompatActivity() {
         socket.on("channelCreated", onNewChannel)
 
         setupAdapters()
+
+        binding.channelList.setOnItemClickListener { _, _, i, _ ->
+            selectedChannel = MessageService.channels[i]
+            drawerLayout.closeDrawer(GravityCompat.START)
+            updateWithChannel()
+        }
     }
 
     override fun onResume() {
@@ -82,16 +90,22 @@ class MainActivity : AppCompatActivity() {
                 binding.navDrawerHeaderInclude.userImageNavHeader.setBackgroundColor(UserDataService.returnAvatarColor(UserDataService.avatarColor))
                 binding.navDrawerHeaderInclude.loginButtonNavHeader.text = "LOGOUT"
 
-                if (context != null) {
-                    MessageService.getChannels(context) { complete ->
+                    MessageService.getChannels { complete ->
                         if(complete) {
-                            channelAdapter.notifyDataSetChanged()
+                            if(MessageService.channels.count() > 0) {
+                                selectedChannel = MessageService.channels[0]
+                                channelAdapter.notifyDataSetChanged()
+                                updateWithChannel()
+                            }
                         }
 
                     }
-                }
             }
         }
+    }
+
+    fun updateWithChannel() {
+        binding.appBarMain.contentMain.mainChannelName.text = "#${selectedChannel?.name}"
     }
 
     fun loginButtonNavClicked(view: View) {
