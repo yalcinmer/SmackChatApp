@@ -59,18 +59,14 @@ class MainActivity : AppCompatActivity() {
         socket.on("messageCreated", onNewMessage)
 
         setupAdapters()
+        LocalBroadcastManager.getInstance(this).registerReceiver(userDataChangeReceiver,
+            IntentFilter(BROADCAST_USER_DATA_CHANGE))
 
         binding.channelList.setOnItemClickListener { _, _, i, _ ->
             selectedChannel = MessageService.channels[i]
             drawerLayout.closeDrawer(GravityCompat.START)
             updateWithChannel()
         }
-    }
-
-    override fun onResume() {
-        LocalBroadcastManager.getInstance(this).registerReceiver(userDataChangeReceiver,
-            IntentFilter(BROADCAST_USER_DATA_CHANGE))
-        super.onResume()
     }
 
     override fun onDestroy() {
@@ -139,6 +135,7 @@ class MainActivity : AppCompatActivity() {
             binding.navDrawerHeaderInclude.userImageNavHeader.setImageResource(R.drawable.profiledefault)
             binding.navDrawerHeaderInclude.userImageNavHeader.setBackgroundColor(Color.TRANSPARENT)
             binding.navDrawerHeaderInclude.loginButtonNavHeader.text = "LOGIN"
+            binding.appBarMain.contentMain.mainChannelName.text = "Please log in!"
         } else {
             val loginIntent = Intent(this, LoginActivity::class.java)
             startActivity(loginIntent)
