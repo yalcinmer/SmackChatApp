@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
                     MessageService.getChannels { complete ->
                         if(complete) {
-                            if(MessageService.channels.count() > 0) {
+                            if(MessageService.channels.isNotEmpty()) {
                                 selectedChannel = MessageService.channels[0]
                                 channelAdapter.notifyDataSetChanged()
                                 updateWithChannel()
@@ -108,6 +108,15 @@ class MainActivity : AppCompatActivity() {
 
     fun updateWithChannel() {
         binding.appBarMain.contentMain.mainChannelName.text = "#${selectedChannel?.name}"
+        if(selectedChannel != null) {
+            MessageService.getMessages(selectedChannel!!.id) { complete ->
+                if(complete) {
+                    for(message in MessageService.messages) {
+
+                    }
+                }
+            }
+        }
     }
 
     fun loginButtonNavClicked(view: View) {
@@ -157,17 +166,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val onNewMessage = Emitter.Listener { args ->
-        runOnUiThread {
-            val messageBody = args[0] as String
-            val channelId = args[2] as String
-            val username = args[3] as String
-            val userAvatar = args[4] as String
-            val userAvatarColor = args[5] as String
-            val id = args[6] as String
-            val timeStamp = args[7] as String
+        if(App.prefs.isLoggedIn) {
+            runOnUiThread {
+                val channelId = args[2] as String
+                if(channelId == selectedChannel?.id) {
+                    val messageBody = args[0] as String
+                    val username = args[3] as String
+                    val userAvatar = args[4] as String
+                    val userAvatarColor = args[5] as String
+                    val id = args[6] as String
+                    val timeStamp = args[7] as String
 
-            val newMessage = Message(messageBody, username, channelId, userAvatar, userAvatarColor, id, timeStamp)
-            MessageService.messages.add(newMessage)
+                    val newMessage = Message(messageBody, username, channelId, userAvatar, userAvatarColor, id, timeStamp)
+                    MessageService.messages.add(newMessage)
+                }
+            }
         }
     }
 
