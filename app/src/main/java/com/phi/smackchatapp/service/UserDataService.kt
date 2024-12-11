@@ -1,6 +1,7 @@
 package com.phi.smackchatapp.service
 
 import android.graphics.Color
+import com.phi.smackchatapp.controller.App
 import java.util.Scanner
 
 object UserDataService {
@@ -17,9 +18,9 @@ object UserDataService {
         avatarName = ""
         email = ""
         name = ""
-        AuthService.authToken = ""
-        AuthService.userEmail = ""
-        AuthService.isLoggedIn = false
+        App.prefs.authToken = ""
+        App.prefs.userEmail = ""
+        App.prefs.isLoggedIn = false
     }
 
     fun returnAvatarColor(components: String) : Int {
